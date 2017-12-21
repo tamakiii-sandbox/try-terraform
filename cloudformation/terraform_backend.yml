@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation template to create resources required to manage terraform state.
+
+Parameters:
+  S3BucketName:
+    Type: String
+    Description: S3 Bucket name
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: "[a-z0-9][a-zA-Z0-9.-]+"
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Ref: S3BucketName
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Name
+          Value: !Sub |-
+            Terraform backend S3 bucket for ${AWS::AccountId} by ${AWS::StackName}.
