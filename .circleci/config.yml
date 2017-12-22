@@ -13,19 +13,3 @@ jobs:
         root: workdir
         paths:
           - terraform.tfplan
-
-  job-apply:
-    docker:
-      - image: hashicorp/terraform:0.11.1
-    steps:
-      - checkout
-      - attach_workspace:
-        at: /tmp/workdir
-      - run: echo "terraform apply /tmp/workdir/terraform.tfplan"
-      - run: [[ -f /tmp/workdir/terraform.tfplan ]] && echo ":)" || (echo ":(" && exit 1)
-
-workflows:
-  version: 2
-  plan:
-    jobs:
-      - job-plan
