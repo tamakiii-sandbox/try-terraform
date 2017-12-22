@@ -17,7 +17,7 @@ jobs:
       - run: cd terraform/awsomeservice && terraform workspace select production
       - run: cd terraform/awsomeservice && terraform plan -var profile=default
 
-  deployment:
+  deploy:
     docker:
       - image: hashicorp/terraform:0.11.1
     branches:
