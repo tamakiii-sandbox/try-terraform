@@ -18,9 +18,5 @@ variable "region" {
 }
 
 variable "profile" {
-  type = "map"
-  default {
-    # development = ""
-    # production = ""
-  }
+  type = "string"
 }
