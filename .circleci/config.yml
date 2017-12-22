@@ -8,7 +8,6 @@ jobs:
       - run: mkdir -p workdir
       - run: echo "terraform init"
       - run: echo "terraform plan -var profile=test -out=workdir/terraform.tfplan"
-
       - persist_to_workspace:
         root: workdir
         paths:
