@@ -8,5 +8,13 @@ jobs:
       - run: apk add --update py-pip && pip install awscli
       - run: aws --region=ap-northeast-1 s3 cp ${S3_CREDENTIALS_URL} ~/.aws/credentials && chmod 600 ~/.aws/credentials
       - run: cd terraform/awsomeservice && terraform init
-      - run: cd terraform/awsomeservice && terraform workspace select development
-      - run: cd terraform/awsomeservice && terraform plan -var profile=default -out terraform.tfplan
+      - run: cd terraform/awsomeservice && terraform workspace select production
+      - run: cd terraform/awsomeservice && terraform plan -var profile=default -out build.tfplan
+
+deployment:
+  terraform-apply:
+    branch: master
+    commands:
+      - cd terraform/awsomeservice && terraform init -reconfigure -backend-config="profile=deploy"
+      - cd terraform/awsomeservice && terraform workspace select production
+      - cd terraform/awsomeservice && terraform plan -var profile=deploy -out deployment.tfplan
