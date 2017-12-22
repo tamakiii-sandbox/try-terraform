@@ -5,6 +5,10 @@ jobs:
       - image: hashicorp/terraform:0.11.1
     steps:
       - checkout
-      - run: mkdir -p workdir
+      - run:
+        name: Install pip
+        command: 'apk add --update py-pip'
+      - run: which terraform && terraform --version
+      - run: which pip && pip --version
       - run: echo "terraform init"
       - run: echo "terraform plan -var profile=test -out=workdir/terraform.tfplan"
