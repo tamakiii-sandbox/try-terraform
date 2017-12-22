@@ -5,8 +5,9 @@ jobs:
       - image: hashicorp/terraform:0.11.1
     steps:
       - checkout
-      - run: apk add --update py-pip
+      - run: apk add --update py-pip && pip install awscli
       - run: which terraform && terraform --version
       - run: which pip && pip --version
+      - run: which aws && aws --version
       - run: echo "terraform init"
       - run: echo "terraform plan -var profile=test -out=workdir/terraform.tfplan"
