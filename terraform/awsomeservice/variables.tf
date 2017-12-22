@@ -20,7 +20,7 @@ variable "region" {
 variable "profile" {
   type = "map"
   default {
-    development = ""
-    production = "terraform"
+    # development = ""
+    # production = ""
   }
 }
