@@ -35,19 +35,19 @@ workflows:
     jobs:
       - build
       - test:
-        requires:
-          - build
+          requires:
+            - build
   build-test-deploy:
     jobs:
       - build
       - test:
-        - requies:
-          - build
+          requies:
+            - build
       - hold:
-        type: approval
-        requies:
-          - test
+          type: approval
+          requies:
+            - test
       - deploy:
-        - requies:
-          - hold
+          - requies:
+            - hold
 
