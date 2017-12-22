@@ -1,8 +1,36 @@
 version: 2
 jobs:
-  build:
+  job-plan:
     docker:
       - image: hashicorp/terraform:0.11.1
     steps:
       - checkout
-      - run: echo "hello ??"
+      - run: mkdir -p workdir
+      - run: echo "terraform init"
+      - run: echo "terraform plan -var profile=test -out=workdir/terraform.tfplan"
+
+      - persist_to_workspace:
+        root: workdir
+        paths:
+          - terraform.tfplan
+
+  job-apply:
+    docker:
+      - image: hashicorp/terraform:0.11.1
+    steps:
+      - checkout
+      - run: echo "terraform apply workdir/terraform.tfplan"
+      - attach_workspace:
+        at: workdir
+      - run: |
+        if [[ -f workdir/terraform.tfplan ]]; then
+          echo "It worked!";
+        else
+          echo "Nope!"; exit 1
+        fi
+
+  workflow:
+    version: 2
+    plan:
+      jobs:
+        - job-plan:
