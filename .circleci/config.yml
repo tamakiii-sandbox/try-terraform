@@ -18,20 +18,36 @@ jobs:
       - run: mkdir -p $CIRCLE_TEST_REPORTS/terraform
       - run: cd terraform/awsomeservice && terraform plan -var profile=default > $CIRCLE_TEST_REPORTS/plan.txt
 
-deployment:
-  terraform-apply:
-    branch: master
-    commands:
-      - cd terraform/awsomeservice && terraform init -reconfigure -backend-config="profile=deploy"
-      - cd terraform/awsomeservice && terraform workspace select production
-      - cd terraform/awsomeservice && terraform plan -var profile=deploy -out deployment.tfplan
+  deployment:
+    docker:
+      - image: hashicorp/terraform:0.11.1
+    branches:
+      only:
+        - master
+    steps:
+      - run: echo 'cd terraform/awsomeservice && terraform init -reconfigure -backend-config="profile=deploy"'
+      - run: echo 'cd terraform/awsomeservice && terraform workspace select production'
+      - run: echo 'cd terraform/awsomeservice && terraform plan -var profile=deploy -out deployment.tfplan'
 
 workflows:
   version: 2
-  build_and_test:
+  build-and-test:
     jobs:
       - build
       - test:
         requires:
           - build
+  build-test-deploy:
+    jobs:
+      - build
+      - test:
+        - requies:
+          - build
+      - hold:
+        type: approval
+        requies:
+          - test
+      - deploy:
+        - requies:
+          - hold
 
