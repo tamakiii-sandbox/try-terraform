@@ -16,6 +16,8 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p $CIRCLE_TEST_REPORTS/terraform
+      - run: cd terraform/awsomeservice && terraform init
+      - run: cd terraform/awsomeservice && terraform workspace select production
       - run: cd terraform/awsomeservice && terraform plan -var profile=default > $CIRCLE_TEST_REPORTS/plan.txt
 
   deployment:
@@ -34,20 +36,21 @@ workflows:
   build-and-test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
-  build-test-deploy:
-    jobs:
-      - build
-      - test:
-          requies:
-            - build
-      - hold:
-          type: approval
-          requies:
-            - test
-      - deploy:
-          - requies:
-            - hold
+      - test
+  #     - test:
+  #         requires:
+  #           - build
+  # build-test-deploy:
+  #   jobs:
+  #     - build
+  #     - test:
+  #         requies:
+  #           - build
+  #     - hold:
+  #         type: approval
+  #         requies:
+  #           - test
+  #     - deploy:
+  #         - requies:
+  #           - hold
 
