@@ -6,11 +6,8 @@ jobs:
     steps:
       - checkout
       - run: apk add --update py-pip && pip install awscli
-      - run: aws configure set region ap-northeast-1
-      - run: aws configure set access_key $AWS_CIRCLECI_ACCESS_KEY_ID
-      - run: aws configure set scret_key $AWS_CIRCLECI_SECRET_ACCESS_KEY
-      - run: which terraform && terraform --version
-      - run: which pip && pip --version
-      - run: which aws && aws --version
-      - run: echo "terraform init"
+      - run: aws --region=ap-northeast-1 s3 cp ${S3_CREDENTIALS_URL} ~/.aws/credentials && chmod 600 ~/.aws/credentials
+      - run: pwd
+      - run: cd terraform && terraform init
+      - run: pwd
       - run: echo "terraform plan -var profile=test -out=workdir/terraform.tfplan"
