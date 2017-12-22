@@ -9,6 +9,8 @@ jobs:
       - run: echo "terraform init"
       - run: echo "terraform plan -var profile=test -out=workdir/terraform.tfplan"
       - persist_to_workspace:
-        root: workdir
-        paths:
-          - terraform.tfplan
+          # Must be an absolute path, or relative path from working_directory
+          root: workdir
+          # Must be relative path from root
+          paths:
+            - terraform.tfplan
