@@ -16,8 +16,8 @@ jobs:
       - image: hashicorp/terraform:0.11.1
     steps:
       - checkout
-      - mkdir -p $CIRCLE_TEST_REPORTS/terraform
-      - cd terraform/awsomeservice && terraform plan -var profile=default > $CIRCLE_TEST_REPORTS/plan.txt
+      - run: mkdir -p $CIRCLE_TEST_REPORTS/terraform
+      - run: cd terraform/awsomeservice && terraform plan -var profile=default > $CIRCLE_TEST_REPORTS/plan.txt
 
 deployment:
   terraform-apply:
