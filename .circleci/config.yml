@@ -28,4 +28,4 @@ workflows:
   version: 2
   plan:
     jobs:
-      - job-plan:
+      - job-plan
