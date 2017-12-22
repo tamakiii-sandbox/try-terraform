@@ -19,15 +19,10 @@ jobs:
       - image: hashicorp/terraform:0.11.1
     steps:
       - checkout
-      - run: echo "terraform apply workdir/terraform.tfplan"
       - attach_workspace:
-        at: workdir
-      - run: |
-        if [[ -f workdir/terraform.tfplan ]]; then
-          echo "It worked!";
-        else
-          echo "Nope!"; exit 1
-        fi
+        at: /tmp/workdir
+      - run: echo "terraform apply /tmp/workdir/terraform.tfplan"
+      - run: [[ -f /tmp/workdir/terraform.tfplan ]] && echo ":)" || (echo ":(" && exit 1)
 
   workflow:
     version: 2
