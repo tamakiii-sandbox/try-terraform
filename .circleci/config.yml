@@ -7,16 +7,15 @@ jobs:
       - checkout
       - run: apk add --update py-pip && pip install awscli
       - run: aws --region=ap-northeast-1 s3 cp ${S3_CREDENTIALS_URL} ~/.aws/credentials && chmod 600 ~/.aws/credentials
-      - run: cd terraform/awsomeservice && terraform init
-      - run: cd terraform/awsomeservice && terraform workspace select production
 
   test:
     docker:
       - image: hashicorp/terraform:0.11.1
     steps:
       - checkout
-      - run: mkdir -p $CIRCLE_TEST_REPORTS/terraform
-      - run: cd terraform/awsomeservice && terraform plan -var profile=default > $CIRCLE_TEST_REPORTS/plan.txt
+      - run: cd terraform/awsomeservice && terraform init
+      - run: cd terraform/awsomeservice && terraform workspace select production
+      - run: cd terraform/awsomeservice && terraform plan -var profile=default
 
   deployment:
     docker:
