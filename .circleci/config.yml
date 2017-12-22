@@ -37,6 +37,9 @@ workflows:
           requires:
             - build
   build-test-deploy:
+    branches:
+      only:
+        - master
     jobs:
       - build
       - test:
