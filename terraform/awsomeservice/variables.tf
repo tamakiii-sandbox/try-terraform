@@ -13,7 +13,7 @@ variable "region" {
   type = "map"
   default {
     development = "us-east-1"
-    production = "ap-northeast"
+    production = "ap-northeast-1"
   }
 }
 
